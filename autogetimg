@@ -1,0 +1,8 @@
+#!/bin/bash
+
+[ -z "$1" ] && echo "Usage: getimg <name>" && exit 0
+
+servants="$*"
+for servant in $servants; do
+	getservantimg "$( getservantid "$servant" )" &
+done

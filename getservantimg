@@ -1,0 +1,24 @@
+#!/usr/bin/dash
+
+[ -z "$1" ] && echo "Usage: getservantimg <id> <class> <name>" && echo "or getservantimg <id>" && exit 0
+
+servant_id=$( echo "$@" | awk '{print $1}' )
+servant_class=$( echo "$@" | awk '{print $2}' )
+servant_name=$( echo "$@" | cut -d' ' -f3- | sed 's/\ /-/g' )
+out_dir=/tmp
+
+
+[ -z "$( echo "$@" | grep -F " " )" ] && out_filename=$servant_id || out_filename=$servant_id-$servant_class-$servant_name
+
+img1=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"a@1.png
+img2=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"a@2.png
+img3=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"b@1.png
+img4=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"b@2.png
+img_ex=png
+
+[ ! -s $out_dir/"$out_filename"-1.$img_ex ] && {
+wget -nc -O $out_dir/"$out_filename"-1.$img_ex "$img1" &
+wget -nc -O $out_dir/"$out_filename"-2.$img_ex "$img2" &
+wget -nc -O $out_dir/"$out_filename"-3.$img_ex "$img3" &
+wget -nc -O $out_dir/"$out_filename"-4.$img_ex "$img4" &
+}

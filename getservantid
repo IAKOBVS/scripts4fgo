@@ -1,0 +1,19 @@
+#!/usr/bin/dash
+
+[ -z "$1" ] && echo "Usage: getservantid <name>" && exit 0
+
+servant_name=$1
+data_dir=/tmp
+json_filename=basic_servant_lang_en
+
+[ $data_dir != /tmp ] && mkdir $data_dir
+
+[ -s /usr/bin/rg ] && alias grep="rg"
+
+[ -n "$( echo "$servant_name" | grep -F "-" )" ] && servant_name=$( echo "$servant_name" | sed 's/-/\ /' ) 
+
+[ ! -s $data_dir/"$json_filename".json ] && \
+	wget -q -nc -O $data_dir/$json_filename.json https://api.atlasacademy.io/export/JP/$json_filename.json
+
+servant_info=$( jq -r '.[] | "\(.id) \(.className) \(.name)"' "$data_dir/$json_filename.json" | grep -F -i -m 1 "$servant_name " )
+echo "$servant_info"
