@@ -8,12 +8,13 @@ json_filename=basic_servant_lang_en
 
 [ $data_dir != /tmp ] && mkdir $data_dir
 
-[ -s /usr/bin/rg ] && alias grep="rg"
+# [ -s /usr/bin/rg ] && alias grep="rg"
 
 [ -n "$( echo "$servant_name" | grep -F "-" )" ] && servant_name=$( echo "$servant_name" | sed 's/-/\ /' ) 
 
 [ ! -s $data_dir/"$json_filename".json ] && \
-	wget -q -nc -O $data_dir/$json_filename.json https://api.atlasacademy.io/export/JP/$json_filename.json
+	wget -q -nc -O $data_dir/$json_filename-raw.json https://api.atlasacademy.io/export/JP/$json_filename.json
+	recode -f utf8..flat <$data_dir/$json_filename-raw.json >$data_dir/$json_filename.json
 
-servant_info=$( jq -r '.[] | "\(.id) \(.className) \(.name)"' "$data_dir/$json_filename.json" | grep -F -i -m 1 "$servant_name " )
+servant_info=$( jq -r '.[] | "\(.id) \(.className) \(.name)"' $data_dir/$json_filename.json | grep -F -i -m 1 "$servant_name" )
 echo "$servant_info"

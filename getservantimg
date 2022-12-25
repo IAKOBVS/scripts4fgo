@@ -17,8 +17,8 @@ img4=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"b@2.p
 img_ex=png
 
 [ ! -s $out_dir/"$out_filename"-1.$img_ex ] && {
-wget -nc -O $out_dir/"$out_filename"-1.$img_ex "$img1" &
-wget -nc -O $out_dir/"$out_filename"-2.$img_ex "$img2" &
-wget -nc -O $out_dir/"$out_filename"-3.$img_ex "$img3" &
-wget -nc -O $out_dir/"$out_filename"-4.$img_ex "$img4" &
+wget -q -nc -O $out_dir/"$out_filename"-1.$img_ex "$img1" &
+wget -q -nc -O $out_dir/"$out_filename"-2.$img_ex "$img2" &
+wget -q -nc -O $out_dir/"$out_filename"-3.$img_ex "$img3" &
+wget -q -nc -O $out_dir/"$out_filename"-4.$img_ex "$img4" &
 }

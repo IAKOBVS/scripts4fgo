@@ -6,3 +6,5 @@ servants="$*"
 for servant in $servants; do
 	getservantimg "$( getservantid "$servant" )" &
 done
+
+echo "Image(s) downloaded!"
