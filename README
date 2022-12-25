@@ -1,0 +1,4 @@
+Dependencies:
+recode (remove accents from names)
+wget (downloading files)
+jq (processing json file)
