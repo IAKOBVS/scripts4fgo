@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -z "$1" ] && echo "Usage: getimg <name>" && exit 0
+[ -z "$1" ] && echo "Usage: getimg <name> <name> et cetera" && exit 0
 
 servants="$*"
 for servant in $servants; do
