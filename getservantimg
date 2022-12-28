@@ -2,46 +2,33 @@
 
 [ -z "$1" ] && echo "Usage: getservantimg <name> <name> et cetera" && exit 0
 
-. $HOME/.local/bin/scripts4fgo/s4go_global_variables
+. $HOME/.local/bin/scripts4fgo/s4go_global
 
-[ ! -s $ram_dir/json_filename_servants_jp ] && s4gosetup
+[ ! -s "$ram_servants_jp" ] || [ ! -s "$ram_list_servants_jp" ] && s4go_toram
 
 out_dir=$ram_dir
 
 cd "$out_dir" || exit
 
-[ -s /usr/bin/rg ] && alias grep="rg"
-[ -s /usr/bin/frawk ] && alias awk="frawk"
-
 for servant_name in "$@"; do
 	{
-	# [ -f "$( echo "$servant_name" | grep "-" )" ] && servant_name=$( echo "$servant_name | sed 's/-/\ /g'" )
-	servant_name=${servant_name^}
-	images=$( jq -M -r --arg SERVANT_NAME "$servant_name" '.[] | select(.name | contains ($SERVANT_NAME) ) | .extraAssets.charaGraph.ascension' "$ram_dir/$json_filename_servants_jp" | grep -F 'http' | awk '{print $2}' | sed 's/$/\ /g'| tr -d "\n\"," )
+	[ -n "$( echo "$servant_name" | grep "-" )" ] && servant_name=$( echo "$servant_name" | sed 's/-/\\\|/g' )
 
-	for image in $images; do
-		wget -q -nc "$image" &
+	# servant_ids=$( grep -i "$servant_name" "$ram_list_servants_jp" | awk -v RS='[0-9]+' '$0=RT' )
+	servant_info=$( grep -i "$servant_name" "$ram_list_servants_jp" | cut -d' ' -f2- )
+
+	servant_class=$( echo "$servant_info" | cut -d' ' -f1 )
+	servant_main_name=$( echo "$servant_info" | cut -d' ' -f2- )
+	
+	echo class is $servant_class
+	echo name is $servant_main_name
+
+	images=$( jq -M -r --arg SERVANT_MAIN_NAME "$servant_main_name" --arg SERVANT_CLASS "$servant_class" '.[] | select(.name | contains($SERVANT_MAIN_NAME) ) | .extraAssets.charaGraph.ascension' "$ram_servants_jp" | grep -F 'http' | cut -d' ' -f2 | sed 's/$/\ /g'| tr -d "\n\"," )
+		
+	for image in $images; do	
+		wget --show-progress -nc "$image" &
 	done
 	} &
 done
-# [ ! -s $out_dir/"$out_filename"-1.$img_ex ] && \
 
-# servant_id=$( echo "$@" | awk '{print $1}' )
-# servant_class=$( echo "$@" | awk '{print $2}' )
-# servant_name=$( echo "$@" | cut -d' ' -f3- | sed 's/\ /-/g' )
-# out_dir=/tmp
-
-# [ -z "$( echo "$@" | grep -F " " )" ] && out_filename=$servant_id || out_filename=$servant_id-$servant_class-$servant_name
-
-# img1=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"a@1.png
-# img2=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"a@2.png
-# img3=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"b@1.png
-# img4=https://static.atlasacademy.io/JP/CharaGraph/$servant_id/"$servant_id"b@2.png
-# img_ex=png
-
-# [ ! -s $out_dir/"$out_filename"-1.$img_ex ] && {
-# wget -q -nc -O $out_dir/"$out_filename"-1.$img_ex "$img1" &
-# wget -q -nc -O $out_dir/"$out_filename"-2.$img_ex "$img2" &
-# wget -q -nc -O $out_dir/"$out_filename"-3.$img_ex "$img3" &
-# wget -q -nc -O $out_dir/"$out_filename"-4.$img_ex "$img4" &
-# }
+echo "Downloading image(s)!"
