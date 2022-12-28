@@ -1,19 +1,27 @@
 #!/usr/bin/bash
+[ -z "$1" ] && echo "Usage: getservantimg <toram or store> <name> <name> et cetera" && echo "If not <toram> or <store>, saves to current directory." && exit 0
 
-[ -z "$1" ] && echo "Usage: getservantimg <name> <name> et cetera" && exit 0
+. $HOME/.local/bin/scripts4fgo/GLOBAL
 
-. $HOME/.local/bin/scripts4fgo/s4go_global
+servants=("${@:2}")
+if [ "$1" == "store" ]; then
+	outDir=$DATA_DIR/$id
+elif [ "$1" == "toram" ]; then
+	outDir=$RAM_DIR
+else
+	outDir=$PWD
+	servants=("$@")
+fi
 
-for servant_name in "$@"; do
+for servantName in "${servants[@]}"; do
+	[ -n "$( echo "$servantName" | grep "-" )" ] && servantName=$( echo "$servantName" | sed 's/-/\ /g' )
 	{
-	id=$( getservantinfo id "$servant_name" )
-	images=$( jq -r -M '.[] | "\(.id) \(.extraAssets)"' "$ram_servants" | grep "^$id " | tr -d "\"{}" | sed 's/,/\n/g; s/.https/https/g' | grep -o 'https.*' )
-	
-	out_dir=$data_dir/$id
-	[ ! -s "$out_dir" ] && mkdir "$out_dir"
+	id=$( getservantinfo id "$servantName" )
+	images=$( jq --argjson ID "$id" -r -M '.[] | select(.id==$ID).extraAssets' "$RAM_SERVANTS_BASIC" | grep -o 'https.*' | sed -E 's/".?//g' )
 
+	[ ! -s "$outDir" ] && mkdir "$outDir"
 	for image in $images; do
-		wget -q -nc -P "$out_dir" "$image" &
+		wget -q -nc -P "$outDir" "$image" &
 	done
 	} &
 done
