@@ -1,5 +1,5 @@
 # scripts4fgo
-Scripts that extract data from the json from https://api.atlasacademy.io/
+Scripts that extract data from the json(s) provided by https://api.atlasacademy.io/
 ## Dependencies:
 recode (remove accents from names)
 <br/>
