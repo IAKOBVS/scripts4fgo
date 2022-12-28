@@ -1,0 +1,34 @@
+#!/usr/bin/bash
+
+[ -z "$1" ] && echo "Usage: getservantimg <name> <name> et cetera" && exit 0
+
+. $HOME/.local/bin/scripts4fgo/GLOBAL
+
+[ ! -s "$RAM_SERVANTS_jp" ] || [ ! -s "$RAM_LIST_SERVANTS_jp" ] && s4go_toram
+
+out_dir=$RAM_DIR
+
+cd "$out_dir" || exit
+
+for servant_name in "$@"; do
+	{
+	[ -n "$( echo "$servant_name" | grep "-" )" ] && servant_name=$( echo "$servant_name" | sed 's/-/\\\|/g' )
+
+	# servant_ids=$( grep -i "$servant_name" "$RAM_LIST_SERVANTS_jp" | awk -v RS='[0-9]+' '$0=RT' )
+	servant_info=$( grep -i "$servant_name" "$RAM_LIST_SERVANTS_jp" | cut -d' ' -f2- )
+
+	servant_class=$( echo "$servant_info" | cut -d' ' -f1 )
+	servant_main_name=$( echo "$servant_info" | cut -d' ' -f2- )
+	
+	echo class is $servant_class
+	echo name is $servant_main_name
+
+	images=$( jq -M -r --arg SERVANT_MAIN_NAME "$servant_main_name" --arg SERVANT_CLASS "$servant_class" '.[] | select(.name | contains($SERVANT_MAIN_NAME) ) | .extraAssets.charaGraph.ascension' "$RAM_SERVANTS_jp" | grep -F 'http' | cut -d' ' -f2 | sed 's/$/\ /g'| tr -d "\n\"," )
+		
+	for image in $images; do	
+		wget --show-progress -nc "$image" &
+	done
+	} &
+done
+
+echo "Downloading image(s)!"

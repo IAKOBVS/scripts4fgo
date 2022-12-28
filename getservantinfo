@@ -1,0 +1,16 @@
+#!/usr/bin/dash
+[ -z "$1" ] && echo "Usage: getservantinfo <id or name> <name>" && exit 0
+
+. $HOME/.local/bin/scripts4fgo/GLOBAL
+
+grepName=$( echo "$@" | cut -d' ' -f2- | sed 's/\ /\.\*/g' )
+
+if [ "$1" = "name" ]; then
+	whichCut(){ cut -d' ' -f3-;}
+elif [ "$1" = "id" ]; then
+	whichCut(){ cut -d' ' -f1;}
+else
+	echo "First argument is not id nor name."
+	echo "Usage: getservantinfo <id or name> <name>"
+fi
+grep -i -m 1 "$grepName" "$RAM_LIST_SERVANTS" | whichCut

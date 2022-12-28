@@ -1,0 +1,32 @@
+#!/usr/bin/dash
+export RAM_DIR=/tmp
+export CACHE_DIR=$HOME/.cache
+export DATA_DIR=$CACHE_DIR/atlas-academy
+
+export JSON_SERVANTS=nice_servant_lang_en.json
+export PATH_SERVANTS=$DATA_DIR/nice_servant_lang_en.json
+export RAM_SERVANTS=$RAM_DIR/nice_servant_lang_en.json
+
+export JSON_SERVANTS_RAW=nice_servant_lang_en_RAW.json
+export PATH_SERVANTS_RAW=$DATA_DIR/nice_servant_lang_en_RAW.json
+export RAM_SERVANTS_RAW=$RAM_DIR/nice_servant_lang_en_RAW.json
+
+export LIST_SERVANTS=list_servant_names.json
+export PATH_LIST_SERVANTS=$DATA_DIR/list_servant_names.json
+export RAM_LIST_SERVANTS=$RAM_DIR/list_servant_names.json
+
+export JSON_SERVANTS_BASIC=basic_servant_lang_en.json
+export PATH_SERVANTS_BASIC=$DATA_DIR/basic_servant_lang_en.json
+export RAM_SERVANTS_BASIC=$RAM_DIR/basic_servant_lang_en.json
+
+export JSON_SERVANTS_BASIC_RAW=basic_servant_lang_en_RAW.json
+export PATH_SERVANTS_BASIC_RAW=$DATA_DIR/basic_servant_lang_en_RAW.json
+export RAM_SERVANTS_BASIC_RAW=$RAM_DIR/basic_servant_lang_en_RAW.json
+
+export LINK_SERVANTS=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS
+export LINK_SERVANTS_BASIC=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS_BASIC
+
+[ -s /usr/bin/rg ] && alias grep="rg"
+[ -s /usr/bin/frawk ] && alias awk="frawk"
+
+[ ! -s "$RAM_SERVANTS_BASIC" ] && s4go_setup && s4go_getlist && s4go_toram

@@ -1,0 +1,5 @@
+#!/usr/bin/dash
+. $HOME/.local/bin/scripts4fgo/GLOBAL
+
+id=$( getservantinfo id "$servantName" )
+jq --argjson ID "$id" -r -M '.[] | select(.id==$ID).atkMax' "$RAM_SERVANTS_BASIC"
