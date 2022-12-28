@@ -14,3 +14,7 @@ bash (used for looping)
 rg (supposedly faster grep)
 <br/>
 frawk (supposedly faster awk)
+
+> cd "$( whereis scripts4fgo | cut -d' ' -f2 )"
+>
+> find . -type f -exec sed -i 's|#!/usr/bin/dash|#!/bin/sh|g' {} ;
