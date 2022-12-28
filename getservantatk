@@ -1,4 +1,6 @@
 #!/usr/bin/dash
+[ -z "$1" ] && echo "Usage: getservantatk name>" && exit 0
+
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 
 id=$( getservantinfo id "$servantName" )
