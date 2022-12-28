@@ -29,4 +29,4 @@ export LINK_SERVANTS_BASIC=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS_
 [ -s /usr/bin/rg ] && alias grep="rg"
 [ -s /usr/bin/frawk ] && alias awk="frawk"
 
-[ ! -s "$RAM_SERVANTS_BASIC" ] && s4go_setup && s4go_getlist && s4go_toram
+[ ! -s "$RAM_SERVANTS_BASIC" ] && s4go_getlist && s4go_toram
