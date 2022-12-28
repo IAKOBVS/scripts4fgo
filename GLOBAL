@@ -25,8 +25,3 @@ export RAM_SERVANTS_BASIC_RAW=$RAM_DIR/basic_servant_lang_en_RAW.json
 
 export LINK_SERVANTS=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS
 export LINK_SERVANTS_BASIC=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS_BASIC
-
-[ -s /usr/bin/rg ] && alias grep="rg"
-[ -s /usr/bin/frawk ] && alias awk="frawk"
-
-[ ! -s "$RAM_SERVANTS_BASIC" ] && s4go_getlist && s4go_toram

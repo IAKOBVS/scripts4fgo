@@ -2,6 +2,7 @@
 [ -z "$1" ] && echo "Usage: getservantimg <toram or store> <name> <name> et cetera" && echo "If not <toram> or <store>, saves to current directory." && exit 0
 
 . $HOME/.local/bin/scripts4fgo/GLOBAL
+. $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
 
 servants=("${@:2}")
 if [ "$1" == "store" ]; then
