@@ -30,6 +30,7 @@ imagemagick (image resizer)
 where you put your scripts; e.g., $HOME/.local/bin
 
 <br/>
+
 > . /your/path/scripts4fgo/GLOBAL_CHECK
 
 <br/>
