@@ -1,8 +1,14 @@
 #!/usr/bin/dash
 . $HOME/.local/bin/scripts4fgo/GLOBAL
+export PATH_SERVANTS_RAW=$DATA_DIR/nice_servant_lang_en_RAW.json
+
+export PATH_SERVANTS_BASIC_RAW=$DATA_DIR/basic_servant_lang_en_RAW.json
+export LINK_SERVANTS_BASIC=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS_BASIC
+export PATH_SERVANTS_BASIC=$DATA_DIR/basic_servant_lang_en.json
+export PATH_SERVANTS=$DATA_DIR/nice_servant_lang_en.json
 {
-wget -q -O "$PATH_SERVANTS_RAW_BASIC" "$LINK_SERVANTS_BASIC" && \
-recode -f utf8..flat <"$PATH_SERVANTS_RAW_BASIC" > "$PATH_SERVANTS_BASIC"
+wget -q -O "$PATH_SERVANTS_BASIC_RAW" "$LINK_SERVANTS_BASIC" && \
+recode -f utf8..flat <"$PATH_SERVANTS_BASIC_RAW" > "$PATH_SERVANTS_BASIC"
 } &
 {
 wget -q -O "$PATH_SERVANTS_RAW" "$LINK_SERVANTS" && \
