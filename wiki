@@ -1,0 +1,2 @@
+#!/usr/bin/dash
+$BROWSER "https://apps.atlasacademy.io/db/JP/servant/$( getservantinfo collectionNo "$@" )"

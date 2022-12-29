@@ -1,23 +1,29 @@
-#!/usr/bin/bash
+#!/usr/bin/dash
 [ -z "$1" ] && echo "Usage: getservantinfo <id or class or collectionNo> <name>" && exit 0
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
 
-grepName=$( echo "$@" | cut -d' ' -f2- | sed 's/\ /\.\*/g' )
-case "$( echo "$@" | wc -w )" in
+grepName=$( echo "$@" | cut -d' ' -f2- | sed 's/-/\ /g' )
+
+case "$( echo "$grepName" | wc -w )" in
+	"1")
+		whichGrep(){ grep -i -F -m 1 "$grepName" "$RAM_LIST_SERVANTS";};;
 	"2")
-		whichGrep(){ grep -i -F -m 1 "$2" "$RAM_LIST_SERVANTS";};;
+		grepFirst=$( echo "$grepName" | cut -d' ' -f1 )
+		grepSecond=$( echo "$grepName" | cut -d' ' -f2 )
+		whichGrep(){ grep -i -F "$grepFirst" "$RAM_LIST_SERVANTS" | grep -i -F -m 1 "$grepSecond";};;
 	"3")
-		whichGrep(){ grep -i -F "$2" "$RAM_LIST_SERVANTS" | grep -i -F -m 1 "$3";};;
-	"4")
-		whichGrep(){ grep -i -F "$2" "$RAM_LIST_SERVANTS" | grep -i -F "$3" | grep -i -F -m 1 "$4";};;
+		grepFirst=$( echo "$grepName" | cut -d' ' -f1 )
+		grepSecond=$( echo "$grepName" | cut -d' ' -f2 )
+		grepThird=$( echo "$grepName" | cut -d' ' -f3 )
+		whichGrep(){ grep -i -F "$grepFirst" "$RAM_LIST_SERVANTS" | grep -i -F "$grepSecond" | grep -i -F -m 1 "$grepThird";};;
 esac
 case "$1" in
 	"id")
 		whichCut(){ cut -d' ' -f1;};;
-	"class")
-		whichCut(){ cut -d' ' -f2;};;
 	"collectionNo")
+		whichCut(){ cut -d' ' -f2;};;
+	"className")
 		whichCut(){ cut -d' ' -f3;};;
 esac
 whichGrep "$@" | whichCut

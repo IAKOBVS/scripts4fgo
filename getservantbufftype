@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+
+servantBuffs=( $( jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | "\(.funcTargetType) \(.buffs | .[] | .type) \(.svals | .[].Value)"' "$RAM_SERVANTS_BASIC" ) )
+linesOfBuffs=$( $servantBuffs | wc -l )
+
+for buff in $servantBuffs; do
+	echo
+done
+
+for ((i=0; i<$linesOfBuffs; i=i+10)); do
+			
+done
+# currLine=0
+# divBy=10
+# while [ $currLine -le "$linesOfBuffs" ]; do
+# 	[ "$(( $(( $currLine / $divBy )) * "$divBy" ))" -eq "$currLine" ] && echo $currLine
+# done

@@ -4,25 +4,27 @@
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
 
-servants=("${@:2}")
-if [ "$1" == "store" ]; then
-	outDir=$DATA_DIR/$id
-elif [ "$1" == "toram" ]; then
-	outDir=$RAM_DIR
-else
-	outDir=$PWD
-	servants=("$@")
-fi
+[ "$1" == "-v" ] && VERBOSE=true && whereToStore=$2 && whichCut=3 || \
+	whereToStore=$1 && whichCut=2
 
-for servantName in "${servants[@]}"; do
-	[ -n "$( echo "$servantName" | grep "-" )" ] && servantName=$( echo "$servantName" | sed 's/-/\ /g' )
+servants=$( echo "$@" | cut -d' ' -f"$whichCut"- )
+
+[ "$whereToStore" == "toram" ] && outDir=$RAM_DIR/ ||
+	[ "$whereToStore" != "store" ] && outDir=$PWD
+
+for servantName in $servants; do
 	{
-	id=$( getservantinfo id "$servantName" )
+	[ -n "$( echo "$servantName" | grep "-" )" ] && spaceServantName=$( echo "$servantName" | sed 's/-/\ /g' )
+	id=$( getservantinfo id "$spaceServantName" )
 	images=$( jq --argjson ID "$id" -r -M '.[] | select(.id==$ID).extraAssets' "$RAM_SERVANTS_BASIC" | grep -o 'https.*' | sed -E 's/".?//g' )
+
+	[ "$whereToStore" == "store" ] && outDir=$DATA_DIR/$id/
 
 	[ ! -s "$outDir" ] && mkdir "$outDir"
 	for image in $images; do
 		wget -q -nc -P "$outDir" "$image" &
 	done
+	[ "$VERBOSE" = true ] && echo "$images" | grep -o '[^/]*$' | sed "s|^|$outDir|g"
 	} &
 done
+
