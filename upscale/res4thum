@@ -7,8 +7,8 @@ else
 fi
 upndownscale(){ 
 	waifu2xauto "$1" "$2"
-	# res "$resolution" "$( cleanpng "$1" )"'-hd.png'
-	# sq "$( cleanpng "$1" )"'-hd-resized.png'
+	res "$( cleanpng "$1" )"'-hd.png' "$resolution"
+	sq "$( cleanpng "$1" )"'-hd-resized.png'
 	echo "$1 has been upscaled $2x."
 }
 img=$1
