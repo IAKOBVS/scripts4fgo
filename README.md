@@ -30,6 +30,4 @@ imagemagick (image resizer)
 > . /your/path/scripts4fgo/GLOBAL_CHECK
 
 <br/>
-Where path is where you put your scripts; e.g., $HOME/.local/bin
-<br/>
 Make sure that you've downloaded all the dependencies.
