@@ -19,10 +19,12 @@ realesrgan-ncnn-vulkan (upscaler)
 <br/>
 imagemagick (image resizer)
 ## Change #!/usr/bin/dash/ to #!/bin/sh (if dash not present)
-> cd "$( whereis scripts4fgo | cut -d' ' -f2 )" && find . -type f -exec sed -i 's|#!/usr/bin/dash|#!/bin/sh|g' {};
+> cd "$( whereis scripts4fgo | cut -d' ' -f2 )"
+
+>find . -type f -exec sed -i 's|#!/usr/bin/dash|#!/bin/sh|g' {};
 ## Installation
 > git clone https://github.com/IAKOBVS/scripts4fgo
->
+
 > mv scripts4fgo <your path>
 <br/>
 where you put your scripts; e.g., $HOME/.local/bin
