@@ -26,9 +26,9 @@ imagemagick (image resizer)
 > git clone https://github.com/IAKOBVS/scripts4fgo
 
 > mv scripts4fgo /your/path
-
+<br/>
 where you put your scripts; e.g., $HOME/.local/bin
-
+<br/>
 > . /your/path/scripts4fgo/GLOBAL_CHECK
-
+<br/>
 Make sure that you've downloaded all the dependencies.
