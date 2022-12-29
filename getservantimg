@@ -11,10 +11,9 @@ esac
 for servantName in $servants; do
 	{	
 	if [[ $( echo $servantName | grep '-' ) ]]; then
-		cleanName=$(echo $servantName | sed 's/-/\ /g')
-		id=$(getservantinfo id "$cleanName") 
-		else
-	id=$(getservantinfo id "$servantName")
+		id=$(getservantinfo id "$servantName") 
+	else
+		id=$(getservantinfo id "$servantName")
 	fi
 	images=$( jq --argjson ID "$id" -r -M '.[] | select(.id==$ID).extraAssets' "$RAM_SERVANTS_BASIC" | grep -o 'https.*' | sed -E 's/".?//g' )
 	case $1 in

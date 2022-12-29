@@ -2,7 +2,7 @@
 [ -z "$1" ] && echo "Usage: getservantinfo <id or class or collectionNo> <name>" && exit 0
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
-grepName=$(echo "$@" | cut -d' ' -f2-)
+grepName=$(echo "$@" | cut -d' ' -f2- | sed 's/-/\ /g')
 numOfNames=$(echo "$grepName" | wc -w)
 case $1 in
 	'id')
