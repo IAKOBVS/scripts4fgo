@@ -14,8 +14,8 @@ servants=$( echo "$@" | cut -d' ' -f"$whichCut"- )
 
 for servantName in $servants; do
 	{
-	[ -n "$( echo "$servantName" | grep "-" )" ] && spaceServantName=$( echo "$servantName" | sed 's/-/\ /g' )
-	id=$( getservantinfo id "$spaceServantName" )
+	[ -n "$( echo "$servantName" | grep "-" )" ] && ServantName=$( echo "$servantName" | sed 's/-/\ /g' )
+	id=$( getservantinfo id "$ServantName" )
 	images=$( jq --argjson ID "$id" -r -M '.[] | select(.id==$ID).extraAssets' "$RAM_SERVANTS_BASIC" | grep -o 'https.*' | sed -E 's/".?//g' )
 
 	[ "$whereToStore" == "store" ] && outDir=$DATA_DIR/$id/
@@ -27,4 +27,3 @@ for servantName in $servants; do
 	[ "$VERBOSE" = true ] && echo "$images" | grep -o '[^/]*$' | sed "s|^|$outDir|g"
 	} &
 done
-
