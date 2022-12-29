@@ -23,8 +23,8 @@ export JSON_SERVANTS_BASIC_RAW=basic_servant_lang_en_RAW.json
 export PATH_SERVANTS_BASIC_RAW=$DATA_DIR/basic_servant_lang_en_RAW.json
 export RAM_SERVANTS_BASIC_RAW=$RAM_DIR/basic_servant_lang_en_RAW.json
 
-export RAM_SERVANTS_ASC=$RAM_DIR/.s4go_asc
-export PATH_SERVANTS_ASC=$RAM_DIR/.s4go_asc
+export RAM_SERVANTS_ASC=$RAM_DIR/s4go_asc
+export PATH_SERVANTS_ASC=$RAM_DIR/s4go_asc
 
 export LINK_SERVANTS=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS
 export LINK_SERVANTS_BASIC=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS_BASIC

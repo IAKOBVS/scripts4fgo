@@ -1,22 +1,31 @@
 #!/usr/bin/dash
-[ -z "$1" ] && echo "Usage: getservanthd <1 or 2 or 3 or 4> <resolution> <toram or store> <name> <name> et cetera, where number refers to the ascension art you want to upscale and if not provided will default to all and resolution is the resolution to which the image is to be upscaled; e.g., 1080 for 1920x1080. <If <resolution> is not provided, defaults to 1280x720" && echo "If <toram> or <store> is not provided, saves to current directory." && exit 0
+[ -z "$1" ] && echo "Usage: getservanthd <1 or 2 or 3 or 4> <resolution> <toram or store> <name>."
+# The number refers to which ascension art you want to upscale, which if not provided will default to all. Resolution is the resolution to which the image is to be upscaled; e.g., 1080 for 1920x1080. If <resolution> is not provided, defaults to 1280x720. If <toram> or <store> is not provided, saves to current directory.
 
 if [ "$1" -lt 5 ] && [ "$1" -gt 0 ]; then
 	whichSed=$1
-	alias whichGrep='grep -F'
-	whichToGrep=$( sed "$whichSed!d" "$RAM_SERVANTS_ASC" )
-	[ "$2" -eq "$2" ] && resolution=$2 && cutAt=3 || cutAt=2
-	whichCut(){ echo "$@" | cut -d' ' -f"$cutAt"- ;}
+	whichGrep(){ grep -F "$( sed "$whichSed!d" "$RAM_SERVANTS_ASC" )";}
+	if [ "$2" -eq "$2" ]; then
+		resolution=$2
+		cutAt=3
+	else
+		cutAt=2
+	fi
+	whichCut(){ echo "$@" | cut -d' ' -f"$cutAt"-;}
 elif [ "$2" -lt 5 ] && [ "$2" -gt 0 ]; then
 	whichSed=$2
-	alias whichGrep='grep -F'
-	whichToGrep=$( sed "$whichSed!d" "$RAM_SERVANTS_ASC" )
-	[ "$1" -eq "$1" ] && resolution=$1 && cutAt=3 || cutAt=2
-	whichCut(){ echo "$@" | cut -d' ' -f"$cutAt"- ;}
+	whichGrep(){ grep -F "$( sed "$whichSed!d" "$RAM_SERVANTS_ASC" )";}
+	if [ "$1" -eq "$1" ]; then
+		resolution=$1
+		cutAt=3
+	else
+		cutAt=2
+	fi
+	whichCut(){ echo "$@" | cut -d' ' -f"$cutAt"-;}
 else
-	alias whichGrep=grep
-	whichToGrep=$( sed 's|\ |\\\||g' "$RAM_SERVANTS_ASC" | tr '\n' ' ' | sed 's/.$//g' )
-	whichCut(){ "$@";} 
+	whichSed=$4
+	whichGrep(){ grep -F "$( sed "$whichSed!d" "$RAM_SERVANTS_ASC" )";}
+	whichCut(){ echo "$1" | tee;}
+	resolution=720
 fi
-
-res4thum "$( getservantimg -v whichCut | whichGrep "$whichToGrep" )" "$resolution"
+res4thum $( getservantimg -v "$( whichCut "$@" )" | whichGrep ) "$resolution"
