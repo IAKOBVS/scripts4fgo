@@ -28,6 +28,5 @@ imagemagick (image resizer)
 > mv scripts4fgo /where/your/scripts/are/executable
 
 > . /your/path/scripts4fgo/GLOBAL_CHECK
-
 <br/>
 Make sure that you've downloaded all the dependencies.
