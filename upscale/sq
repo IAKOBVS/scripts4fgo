@@ -1,0 +1,2 @@
+#!/usr/bin/dash
+magick "$1" -background none -extent 1280x1280 "$( cleanpng "$1" )"'-square.png'

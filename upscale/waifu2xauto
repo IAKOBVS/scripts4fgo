@@ -1,0 +1,28 @@
+#!/usr/bin/dash
+
+[ -z "$2" ] && echo "Usage: waifu2xauto <image> <scale>" && exit 0
+
+basescale=4
+upscaler=realesrgan-x4plus-anime
+out="$(cleanpng "$1")"'-hd.png'
+
+realesr(){ realesrgan-ncnn-vulkan -f png -i "$1" -o "$2" -s "$3" -n "$4" -x -v
+}
+
+if [ "$2" -le 4 ]; then
+	it=-1
+elif [ "$2" -le 16 ]; then
+	it=1	
+else
+	it=2	
+fi
+
+realesr "$1" "$out" "$basescale" "$upscaler"
+
+if [ "$it" -ne "-1" ]; then
+	for i in $( seq 1 "$it" ); do
+		realesr "$out" "$out" "$basescale" "$upscaler"
+	done
+fi
+
+rm -rf /tmp/.realesrgan-*

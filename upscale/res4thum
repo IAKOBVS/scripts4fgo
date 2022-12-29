@@ -1,0 +1,26 @@
+#!/usr/bin/dash
+[ -z "$1" ] && echo "Usage: res4thumbnail <image> <resolution>" && exit 0
+if [ -z "$2" ];then
+	resolution=720
+else
+	resolution=$2
+fi
+upndownscale(){ 
+	waifu2xauto "$1" "$2"
+	# res "$resolution" "$( cleanpng "$1" )"'-hd.png'
+	# sq "$( cleanpng "$1" )"'-hd-resized.png'
+	echo "$1 has been upscaled $2x."
+}
+img=$1
+scale=$( getres "$img" | awk -v a="$resolution" '{print int(a/$1 + 0.99)}' )
+if [ 2 -gt "$scale" ]; then
+	echo "'$1' need not be upscaled" && res "$img" "$resolution"
+elif [ 5 -gt "$scale" ]; then
+	upscale=4 && upndownscale "$img" $upscale
+elif [ 17 -gt "$scale" ]; then
+	upscale=16 && upndownscale "$img" $upscale
+elif [ 33 -gt "$scale" ]; then
+	upscale=32 && upndownscale "$img" $upscale
+else
+	upscale=64 && upndownscale "$img" $upscale
+fi
