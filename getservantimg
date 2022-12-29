@@ -10,7 +10,7 @@ case $1 in
 esac
 for servantName in $servants; do
 	{	
-	if [[ $( echo $servantName | grep '-' ) ]]; then
+	if [[ "$( echo $servantName | grep '-' )" ]]; then
 		id=$(getservantinfo id "$servantName") 
 	else
 		id=$(getservantinfo id "$servantName")
