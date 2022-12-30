@@ -1,2 +1,0 @@
-#!/usr/bin/dash
-identify "$1" | frawk '{print $3}' | cut -d "x" -f2-

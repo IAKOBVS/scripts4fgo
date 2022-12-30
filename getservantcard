@@ -1,8 +1,0 @@
-#!/usr/bin/dash
-. $HOME/.local/bin/scripts4fgo/GLOBAL
-. $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
-
-id=$( getservantinfo id "$@" )
-servantCard=$( jq --argjson ID "$id" -r -M '.[] | select(.id==$ID) | .noblePhantasms | .[].individuality | .[] | select(.id==4002) | .name' "$RAM_SERVANTS_BASIC" | /usr/bin/grep -i 'arts\|buster\|quick' | head -n 1 | sed 's/card//g' )
-$servantCard
-[ "$( echo "$servantCard" | wc -l )" -gt 1  ] && echo "Which one (1, 2, 3)?" && echo "$servantCard" && read -r servantCardFinal && echo "$servantCardFinal"

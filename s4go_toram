@@ -1,7 +1,0 @@
-#!/usr/bin/dash
-. $HOME/.local/bin/scripts4fgo/GLOBAL
-
-cp "$PATH_SERVANTS" "$RAM_DIR" &
-cp "$PATH_SERVANTS_BASIC" "$RAM_DIR" &
-cp "$PATH_LIST_SERVANTS" "$RAM_DIR" &
-cp "$DATA_DIR/.s4go_asc" "$RAM_DIR" &

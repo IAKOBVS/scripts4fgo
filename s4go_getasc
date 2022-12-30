@@ -1,5 +1,0 @@
-#!/usr/bin/dash
-. $HOME/.local/bin/scripts4fgo/GLOBAL
-
-id=100100
-jq --argjson ID "$id" -r -M '.[] | select(.id==$ID).extraAssets.charaGraph.ascension' "$PATH_SERVANTS_BASIC" | grep -o '.@.*' | sed -E 's/".?//g' > "$PATH_SERVANTS_ASC"

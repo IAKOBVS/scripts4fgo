@@ -1,2 +1,0 @@
-#!/usr/bin/dash
-convert -resize "$2" "$1" "$( cleanpng "$1" )"'-resized.png'
