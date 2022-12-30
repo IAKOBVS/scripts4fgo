@@ -1,5 +1,5 @@
-#!/bin/bash
-[[ -z "$1" ]] && echo "Usage: getservantimg <toram or store> <name> <name> et cetera" && echo "If not <toram> or <store>, saves to current directory." && exit 0
+#!/usr/bin/bash
+[ -z "$1" ] && echo "Usage: getservantimg <toram or store> <name> <name> et cetera" && echo "If not <toram> or <store>, saves to current directory." && exit 0
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
 case $1 in
@@ -10,7 +10,7 @@ case $1 in
 esac
 for servantName in $servants; do
 	{	
-	if [[ "$( echo $servantName | grep '-' )" ]]; then
+	if [ "$( echo $servantName | grep '-' )" ]; then
 		id=$(getservantinfo id "$servantName") 
 	else
 		id=$(getservantinfo id "$servantName")
@@ -34,7 +34,7 @@ for servantName in $servants; do
 		*)
 			outDir=$PWD/;;
 	esac
-	[[ -d $outDir ]] && mkdir "$outDir"
+	[ -d "$outDir" ] && mkdir "$outDir"
 	for image in $images; do
 		wget -q -nc -P "$outDir" "$image" &
 	done

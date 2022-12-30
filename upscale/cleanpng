@@ -1,3 +1,2 @@
 #!/usr/bin/dash
 echo "$1" | sed 's/\.[^.]*$//'
-# echo "$1" | cut -f1 -d"."
