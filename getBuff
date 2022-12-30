@@ -1,0 +1,10 @@
+#!/usr/bin/dash
+. $HOME/.local/bin/scripts4fgo/GLOBAL
+. $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
+servantName=$1
+id=$(getInfo id "$servantName")
+servantBuffs=$(jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | "\(.funcTargetType) \(.funcTargetTeam) \(.buffs | .[] | .type) \(.buffs | .[] | .name) \(.funcTargetType) \(.buffs | .[] | .type) \(.buffs | .[] | .name) \(.svals | .[].Value)"' "$RAM_SERVANTS")
+numOfLines=$(echo "$servantBuffs" | wc -l)
+for line in $( seq 10 10 $numOfLines ); do
+	echo "$servantBuffs" | sed -n "$line p"
+done

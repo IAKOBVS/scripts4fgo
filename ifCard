@@ -1,0 +1,14 @@
+#!/usr/bin/dash
+. $HOME/.local/bin/scripts4fgo/GLOBAL
+. $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
+servantCard=$1
+case $servantCard in
+	'cardArts')
+		supportServant=altria-caster;;
+	'cardBuster')
+		supportServant=koyanskaya-assassin;;
+	'cardQuick')
+		supportServant=skadi-caster;;
+esac
+totalBuff=$( getBuff "$( getInfo id "$supportServant")" )
+printf '%s\n%s' "$totalBuff" "$totalBuff"

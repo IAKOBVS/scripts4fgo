@@ -1,0 +1,10 @@
+#!/usr/bin/dash
+. $HOME/.local/bin/scripts4fgo/GLOBAL
+{
+wget -q -O "$PATH_SERVANTS_BASIC_RAW" "$LINK_SERVANTS_BASIC" && \
+recode -f utf8..flat <"$PATH_SERVANTS_BASIC_RAW" > "$PATH_SERVANTS_BASIC"
+} &
+{
+wget -q -O "$PATH_SERVANTS_RAW" "$LINK_SERVANTS" && \
+recode -f utf8..flat <"$PATH_SERVANTS_RAW" > "$PATH_SERVANTS"
+} &

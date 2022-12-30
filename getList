@@ -1,0 +1,4 @@
+#!/usr/bin/dash
+. $HOME/.local/bin/scripts4fgo/GLOBAL
+
+jq -r -M '.[] | "\(.id) \(.collectionNo) \(.className) \(.traits | .[] | .name) \(.name)"' "$PATH_SERVANTS_BASIC" > "$PATH_LIST_SERVANTS"
