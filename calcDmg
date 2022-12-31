@@ -1,8 +1,11 @@
 #!/usr/bin/bash
+[ -z "$1" ] && printf 'at = atk\nam = artsMod\nn = np damage\np = powerMod\nse = special attack\n\ne.g., bm50 at20 n50' && echo && exit 0
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
 spaceToLine=$(echo "$@" | sed 's/\ /\n/g')
 OUT_DIR=$RAM_DIR/s4go
+SE_PATH=$OUT_DIR/seMod
+STR_PATH=$OUT_DIR/strMod
 [ ! -d "$OUT_DIR" ] && mkdir "$OUT_DIR"
 whichGrep(){ echo "$spaceToLine" | grep -F "$1" | tr -d -c 0-9'\n' >> "$OUT_DIR"/"$2";}
 whichGrep 'at' attackMod &
@@ -12,12 +15,18 @@ whichGrep 'qm' quickMod &
 whichGrep 'n' pMod &
 whichGrep 'p' pMod &
 whichGrep 'se' seMod &
+whichGrep 'str' strMod &
+{ [ -s "$SE_PATH" ] && mv "$SE_PATH" "$SE_PATH.bak" &&\
+	awk '{print $1/100}' "$SE_PATH.bak" > "$SE_PATH" &&\
+	rm "$SE_PATH".bak;} &
+{ [ -s "$STR_PATH" ] && echo '1.33333333333' > "$STR_PATH";} &
 wait
-files=$(find "$RAM_DIR/s4go/" -type f 2> /dev/null)
+files=$(find "$OUT_DIR" -type f ! -name 'seMod' ! -name 'strMod' 2> /dev/null)
 for file in $files; do
-	mv "$file" "$file.new"
-	awk '{sum += $1} END {print sum}' "$file.new" > "$file" &
+	{ mv "$file" "$file.bak" &&\
+		awk '{sum += $1} END {print sum}' "$file.bak" > "$file" &&\
+		rm "$file.bak";} &
 done
 wait
-printf "%'d" "$(cat $files | awk 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod}')"
-{ sleep 1 && rm -rf "$OUT_DIR";} &
+printf "%'d" "$(awk -v a="$SE" 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod*a}' $files)"
+rm $files
