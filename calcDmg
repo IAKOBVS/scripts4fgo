@@ -4,26 +4,20 @@
 spaceToLine=$(echo "$@" | sed 's/\ /\n/g')
 OUT_DIR=$RAM_DIR/s4go
 [ ! -d "$OUT_DIR" ] && mkdir "$OUT_DIR"
-# whichGrep(){ echo "$spaceToLine" | grep -F "$1" | awk '{print $NF}' | tr -d -c 0-9 >> "$RAM_DIR"/s4go/"$2";}
-whichGrep(){ echo "$spaceToLine" | grep -F "$1" | tr -d -c 0-9'\n';}
-# {
-whichGrep 'at' >> "$OUT_DIR"/atkMod
-whichGrep 'am' >> "$OUT_DIR"/artsMod
-whichGrep 'bm' >> "$OUT_DIR"/busterMod
-whichGrep 'qm' >> "$OUT_DIR"/quickMod
-whichGrep 'n' >> "$OUT_DIR"/npMod
-whichGrep 'p' >> "$OUT_DIR"/npMod 
-whichGrep 'se' >> "$OUT_DIR"/seMod 
-# whichGrep 'cd' critMod
-# whichGrep 'str' sMod
-# }
+whichGrep(){ echo "$spaceToLine" | grep -F "$1" | tr -d -c 0-9'\n' >> "$OUT_DIR"/"$2";}
+whichGrep 'at' attackMod &
+whichGrep 'am' artsMod &
+whichGrep 'bm' busterMod &
+whichGrep 'qm' quickMod &
+whichGrep 'n' pMod &
+whichGrep 'p' pMod &
+whichGrep 'se' seMod &
+wait
 files=$(find "$RAM_DIR/s4go/" -type f 2> /dev/null)
-# {
 for file in $files; do
-	mv "$file" "$file-new"
-	awk '{sum += $1} END {print sum}' "$file-new" > "$file"
+	mv "$file" "$file.new"
+	awk '{sum += $1} END {print sum}' "$file.new" > "$file" &
 done
-# }
-printf "%'d" "$(cat $files | awk 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod}')" 
-echo ''
-rm -rf "$OUT_DIR"
+wait
+printf "%'d" "$(cat $files | awk 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod}')"
+{ sleep 1 && rm -rf "$OUT_DIR";} &
