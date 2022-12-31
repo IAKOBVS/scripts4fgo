@@ -5,4 +5,7 @@ getList(){ jq -r -M '.[] | "\(.id) \(.collectionNo) \(.className) \(.traits | .[
 toRam(){ cp "$PATH_SERVANTS" "$RAM_DIR" & cp "$PATH_SERVANTS_BASIC" "$RAM_DIR" & cp "$PATH_LIST_SERVANTS" "$RAM_DIR" & cp "$DATA_DIR/.s4go_asc" "$RAM_DIR" &}
 wget -q -O "$PATH_SERVANTS_BASIC_RAW" "$LINK_SERVANTS_BASIC" && recode -f utf8..flat <"$PATH_SERVANTS_BASIC_RAW" > "$PATH_SERVANTS_BASIC" &
 wget -q -O "$PATH_SERVANTS_RAW" "$LINK_SERVANTS" && recode -f utf8..flat <"$PATH_SERVANTS_RAW" > "$PATH_SERVANTS" &
-getAsc; getList; toRam
+wait
+getAsc & getList &
+wait
+toRam

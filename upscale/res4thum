@@ -1,15 +1,28 @@
 #!/usr/bin/dash
 [ -z "$1" ] && echo "Usage: res4thumbnail <image> <resolution>" && exit 0
-[ -z "$2" ] && resolution=720 || \
-	resolution=$2
+[ -z "$2" ] && width=1280 && height=720
+if [ -z "$(echo "$2" | grep 'x')" ]; then
+	case "$2" in
+		'720')
+			width=1280 && height=720;;
+		'1080')
+			width=1920 && height=1080;;
+		'1440')
+			width=2560 && height=1440;;
+		'4k')
+			width=3840 && height=2160;;
+	esac
+fi
+resolution=$(echo "$width"x"$height")
 img=$1
 upndownscale(){ waifu2xauto "$1" "$2"
 	res "$( cleanpng "$1" )"'-hd.png' "$resolution"
 	sq "$( cleanpng "$1" )"'-hd-resized.png'
 	echo "$1 has been upscaled $2x.";}
-scale=$( getres "$img" | awk -v a="$resolution" '{print int(a/$1 + 0.99)}' )
-[ 2 -gt "$scale" ] && echo "'$1' need not be upscaled" && res "$img" "$resolution" && return 0 || \
-	[ 5 -gt "$scale" ] && upscale=4 && upndownscale "$img" "$upscale" && return 0 || \
-	[ 17 -gt "$scale" ] && upscale=16 && upndownscale "$img" "$upscale" && return 0 || \
-	[ 33 -gt "$scale" ] && upscale=32 && upndownscale "$img" "$upscale" && return 0 || \
-	upscale=64 && upndownscale "$img" "$upscale"
+scale=$( getres "$img" | awk -v a="$height" '{print int(a/$1 + 0.99)}' )
+if [ 2 -gt "$scale" ]; then echo "'$1' need not be upscaled" && res "$img" "$resolution"
+elif [ 5 -gt "$scale" ];then upscale=4 && upndownscale "$img" "$upscale"
+elif [ 17 -gt "$scale" ]; then upscale=16 && upndownscale "$img" "$upscale"
+elif [ 33 -gt "$scale" ]; then upscale=32 && upndownscale "$img" "$upscale"
+else upscale=64 && upndownscale "$img" "$upscale"
+fi

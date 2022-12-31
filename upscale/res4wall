@@ -1,6 +1,5 @@
 #!/usr/bin/dash
 [ -z "$1" ] && echo "Usage: res4thumbnail <image>" && exit 0
-
 upndownscale(){ 
 	waifu2xauto "$1" "$2"
 	res720 "$( cleanpng "$1" )"'-hd.png'
