@@ -19,14 +19,14 @@ realesrgan-ncnn-vulkan (upscaler)
 <br/>
 imagemagick (image resizer)
 ## Change #!/usr/bin/dash/ to #!/bin/sh (if dash not present)
-> cd "$( whereis scripts4fgo | cut -d' ' -f2 )"
-
->find . -type f -exec sed -i 's|#!/usr/bin/dash|#!/bin/sh|g' {};
+```
+cd "$( whereis scripts4fgo | cut -d' ' -f2 )"
+find . -type f -exec sed -i 's|#!/usr/bin/dash|#!/bin/sh|g' {};
+```
 ## Installation
-> git clone https://github.com/IAKOBVS/scripts4fgo
-
-> mv scripts4fgo /where/your/scripts/are/executable
-
-> . /your/path/scripts4fgo/GLOBAL_CHECK
-<br/>
+```
+git clone https://github.com/IAKOBVS/scripts4fgo
+mv scripts4fgo /where/your/scripts/are/executable
+. /your/path/scripts4fgo/GLOBAL_CHECK
+```
 Make sure that you've downloaded all the dependencies.
