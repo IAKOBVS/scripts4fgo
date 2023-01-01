@@ -4,7 +4,9 @@
 servantName=$1
 id=$(getInfo id "$servantName")
 servantBuffs=$(jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | "\(.funcTargetType) \(.funcTargetTeam) \(.buffs | .[] | .type) \(.buffs | .[] | .name) \(.funcTargetType) \(.buffs | .[] | .type) \(.buffs | .[] | .name) \(.svals | .[].Value)"' "$RAM_SERVANTS")
-numOfLines=$(echo "$servantBuffs" | wc -l)
-for line in $( seq 10 10 $numOfLines ); do
-	echo "$servantBuffs" | sed -n "$line p"
+lineNum=$(echo "$servantBuffs" | wc -l)
+i=1
+while [ "$lineNum" -lt $i ]; do
+	echo "$servantBuffs" | sed -n "$i p"
+	i=$((i=i+1))
 done
