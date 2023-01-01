@@ -1,2 +1,2 @@
 #!/usr/bin/dash
-identify "$1" | frawk '{print $3}' | cut -d "x" -f2-
+identify -ping -format '%w %h' "$1"

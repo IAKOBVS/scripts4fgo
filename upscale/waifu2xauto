@@ -3,15 +3,17 @@
 baseScale=4
 upscaler=realesrgan-x4plus-anime
 out="$(cleanpng "$1")"'-hd.png'
-realesr(){ realesrgan-ncnn-vulkan -f png -i "$1" -o "$2" -s "$3" -n "$4" -x -v;}
-if [ "$2" -le 4 ]; then it=1
-elif [ "$2" -le 16 ]; then it=2
-else it=3
+realesr(){ realesrgan-ncnn-vulkan -f png -i "$1" -o "$2" -s "$3" -n "$4" -v;}
+if [ "$2" -le 4 ]; then
+	it=0
+elif [ "$2" -le 16 ]; then
+	it=1
+else
+	it=2
 fi
-if [ "$it" -ne "-1" ]; then
-	i=0
-	while [ $i -lt $it ]; do
-		realesr "$out" "$out" "$baseScale" "$upscaler"
-		i=$((i=i+1))
-	done
-fi
+realesr "$1" "$out" "$baseScale" "$upscaler"
+i=0
+while [ $i -lt $it ]; do
+	realesr "$1" "$out" "$baseScale" "$upscaler"
+	i=$((i=i+1))
+done
