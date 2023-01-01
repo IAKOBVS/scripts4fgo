@@ -1,5 +1,5 @@
 #!/usr/bin/dash
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 [ -s /usr/bin/rg ] && alias grep="rg"
-[ -s /usr/bin/frawk ] && alias awk="frawk"
+# [ -s /usr/bin/frawk ] && alias awk="frawk"
 [ ! -s "$RAM_SERVANTS" ] && s4go_setup
