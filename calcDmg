@@ -2,31 +2,37 @@
 [ -z "$1" ] && printf 'at = atk\nam = artsMod\nn = np damage\np = powerMod\nse = special attack\n\ne.g., bm50 at20 n50' && echo && exit 0
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
-spaceToLine=$(echo "$@" | sed 's/\ /\n/g')
-OUT_DIR=$RAM_DIR/s4go
-SE_PATH=$OUT_DIR/seMod
-STR_PATH=$OUT_DIR/strMod
 [ ! -d "$OUT_DIR" ] && mkdir "$OUT_DIR"
-whichGrep(){ echo "$spaceToLine" | grep -F "$1" | tr -d -c 0-9'\n' >> "$OUT_DIR"/"$2";}
-whichGrep 'at' attackMod &
-whichGrep 'am' artsMod &
-whichGrep 'bm' busterMod &
-whichGrep 'qm' quickMod &
-whichGrep 'n' pMod &
-whichGrep 'p' pMod &
-whichGrep 'se' seMod &
-whichGrep 'str' strMod &
-{ [ -s "$SE_PATH" ] && mv "$SE_PATH" "$SE_PATH.bak" &&\
-	awk '{print $1/100}' "$SE_PATH.bak" > "$SE_PATH" &&\
-	rm "$SE_PATH".bak;} &
-{ [ -s "$STR_PATH" ] && echo '1.33333333333' > "$STR_PATH";} &
-wait
-files=$(find "$OUT_DIR" -type f ! -name 'seMod' ! -name 'strMod' 2> /dev/null)
-for file in $files; do
-	{ mv "$file" "$file.bak" &&\
-		awk '{sum += $1} END {print sum}' "$file.bak" > "$file" &&\
-		rm "$file.bak";} &
+OUT_DIR=$RAM_DIR/s4go
+rmNotNum(){ echo "$i" | tr -d -c 0-9'\n';}
+for i in "$@"; do
+	case "$i" in
+		at*)
+			rmNotNum "$i" >> "$OUT_DIR"/at &;;
+		am*)
+			rmNotNum "$i" >> "$OUT_DIR"/am &;;
+		bm*)
+			rmNotNum "$i" >> "$OUT_DIR"/bm &;;
+		qm*)
+			rmNotNum "$i" >> "$OUT_DIR"/qm &;;
+		n*)
+			rmNotNum "$i" >> "$OUT_DIR"/n &;;
+		p*)
+			rmNotNum "$i" >> "$OUT_DIR"/p &;;
+		se*)
+			awk -v i="$i" 'BEGIN {print substr(i,3,2)/10}' > "$RAM_DIR"/se &;;
+		str*)
+			[[ $i =~ 1 ]] && echo "$i.33333333333" > "$OUT_DIR"/str &;;
+	esac
 done
+ifThenSum(){ { [ -s "$OUT_DIR"/"$1" ] && sumFile "$OUT_DIR"/"$1" >> "$OUT_DIR"/result;} &}
+sumFile(){ awk '{sum += $1} END {print sum}' "$1";}
 wait
-printf "%'d" "$(awk -v a="$SE" 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod*a}' $files)"
-rm $files
+ifThenSum at &
+ifThenSum am &
+ifThenSum bm &
+ifThenSum qm &
+ifThenSum n &
+ifThenSum p &
+wait
+awk 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod}' "$OUT_DIR"/result

@@ -3,7 +3,7 @@
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
 grepName=$(echo "$@" | cut -d' ' -f2- | sed 's/-/\ /g')
-numOfNames=$(echo "$grepName" | wc -w)
+namesNum=$(echo "$grepName" | wc -w)
 case $1 in
 	'id')
 		whichCut(){ cut -d' ' -f1;};;
@@ -12,7 +12,7 @@ case $1 in
 	'className')
 		whichCut(){ cut -d' ' -f3;};;
 esac
-case $numOfNames in
+case $namesNum in
 	'1')
 		whichGrep(){ grep -i -F -m 1 "$grepName" "$RAM_LIST_SERVANTS";};;
 	'2')
