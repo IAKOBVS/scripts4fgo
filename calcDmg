@@ -1,9 +1,9 @@
-#!/usr/bin/bash
+#!/usr/bin/dash
 [ -z "$1" ] && printf 'at = atk\nam = artsMod\nn = np damage\np = powerMod\nse = special attack\n\ne.g., bm50 at20 n50' && echo && exit 0
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
-[ ! -d "$OUT_DIR" ] && mkdir "$OUT_DIR"
 OUT_DIR=$RAM_DIR/s4go
+[ ! -d "$OUT_DIR" ] && mkdir "$OUT_DIR"
 rmNotNum(){ echo "$i" | tr -d -c 0-9'\n';}
 for i in "$@"; do
 	case "$i" in
@@ -22,11 +22,11 @@ for i in "$@"; do
 		se*)
 			awk -v i="$i" 'BEGIN {print substr(i,3,2)/10}' > "$RAM_DIR"/se &;;
 		str*)
-			[[ $i =~ 1 ]] && echo "$i.33333333333" > "$OUT_DIR"/str &;;
+			[ -n "$( echo "$i" | grep -F '1')" ] && echo "$i.33333333333" > "$OUT_DIR"/str &;;
 	esac
 done
-ifThenSum(){ { [ -s "$OUT_DIR"/"$1" ] && sumFile "$OUT_DIR"/"$1" >> "$OUT_DIR"/result;} &}
-sumFile(){ awk '{sum += $1} END {print sum}' "$1";}
+sumFile(){ awk '{sum += $1} END {print sum}' "$OUT_DIR/$1";}
+ifThenSum(){ [ -s "$OUT_DIR"/"$1" ] && sumFile "$1" >> "$OUT_DIR"/result;}
 wait
 ifThenSum at &
 ifThenSum am &
@@ -34,5 +34,5 @@ ifThenSum bm &
 ifThenSum qm &
 ifThenSum n &
 ifThenSum p &
-wait
 awk 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod}' "$OUT_DIR"/result
+rm -rf "$OUT_DIR"
