@@ -2,7 +2,11 @@
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 getAsc(){ jq -r -M '.[] | select(.id==100100).extraAssets.charaGraph.ascension' "$PATH_SERVANTS" | grep -o '.@.*' | sed -E 's/".?//g' > "$PATH_SERVANTS_ASC";}
 getList(){ jq -r -M '.[] | "\(.id) \(.collectionNo) \(.className) \(.traits | .[] | .name) \(.name)"' "$PATH_SERVANTS" > "$PATH_LIST_SERVANTS";}
-toRam(){ cp "$PATH_SERVANTS" "$RAM_DIR" & cp "$PATH_SERVANTS_BASIC" "$RAM_DIR" & cp "$PATH_LIST_SERVANTS" "$RAM_DIR" & cp "$DATA_DIR/.s4go_asc" "$RAM_DIR" &}
+toRam(){ cp "$PATH_SERVANTS" "$RAM_DIR" &
+	cp "$PATH_SERVANTS_BASIC" "$RAM_DIR" &
+	cp "$PATH_LIST_SERVANTS" "$RAM_DIR" &
+	cp "$DATA_DIR/.s4go_asc" "$RAM_DIR" &
+	cp "$PATH_ATTACK_RATE" "$RAM_DIR" &}
 wget -q -O "$PATH_SERVANTS_BASIC_RAW" "$LINK_SERVANTS_BASIC" && recode -f utf8..flat <"$PATH_SERVANTS_BASIC_RAW" > "$PATH_SERVANTS_BASIC" &
 wget -q -O "$PATH_SERVANTS_RAW" "$LINK_SERVANTS" && recode -f utf8..flat <"$PATH_SERVANTS_RAW" > "$PATH_SERVANTS" &
 wait

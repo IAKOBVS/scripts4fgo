@@ -28,3 +28,9 @@ export PATH_SERVANTS_ASC=$RAM_DIR/s4go_asc
 
 export LINK_SERVANTS=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS
 export LINK_SERVANTS_BASIC=https://api.atlasacademy.io/export/JP/$JSON_SERVANTS_BASIC
+
+export PATH_ATTACK_RATE=$DATA_DIR/NiceClassAttackRate.json
+export RAM_ATTACK_RATE=$RAM_DIR/NiceClassAttackRate.json
+
+export PATH_CLASS_RELATION=$DATA_DIR/NiceClassRelation.json
+export RAM_CLASS_RELATION=$RAM_DIR/NiceClassRelation.json

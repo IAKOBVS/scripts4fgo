@@ -1,24 +1,38 @@
 #!/usr/bin/bash
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
-while IFS= read -r targetType targetTeam buffType buffValue; do
-	case $buffType in
-		# 'upCriticalDamage')
-		# 	upCrit=($buffValue);
-		'upAtk')
-			upAtk=($buffValue);;
-		'downDefence')
-			downDefence=($buffValue);;
-		'upDamage')
-			upDamage=($buffValue);;
-		'upNpdamage')
-			upNpDamage=($buffValue);;
-		'upCommandall')
-			upCommandall=("$buffValue");;
-		'upDamageIndividuality')
-			upDamageIndividuality=("$buffValue");;
-	esac
+# while IFS= read -r targetType targetTeam buffType buffValue; do
+# 	case $line in
+# 		'*rts*')
+# 			card=Arts;;
+# 		'*uster*')
+# 			card=Buster;;
+# 		'*uick*')
+# 			card=Quick;;
+# 	esac
+# 	case $buffType in
+# 		'upAtk')
+# 			out=at;;
+# 		'downDefence')
+# 			out=def;;
+# 		'upDamage')
+# 			out=pm;;
+# 		'upNpdamage')
+# 			out=np;;
+# 		'upCommandall')
+# 			case $card in
+# 				'Arts')
+# 					out=am;;
+# 				'Buster')
+# 					out=bm;;
+# 				'Quick')
+# 					out=am;;
+# 			esac;;
+# 		'upDamageIndividuality')
+# 			out=pm;;
+# 	esac
+# done
+while read line; do
+	[ $( echo "$line" | grep ) ]
 done
-totalBuff=$(\("$upAtk" - "$downDefence"\) \* "$upCommandall \* ")
-echo "scale=10; $totalBuff" | bc
 # damage for this card = [servantAtk * npDamageMultiplier * (firstCardBonus + (cardDamageValue * (1 + cardMod))) * classAtkBonus * triangleModifier * attributeModifier * randomModifier * 0.23 * (1 + atkMod - defMod) * criticalModifier * extraCardModifier * (1 - specialDefMod) * {1 + powerMod + selfDamageMod + (critDamageMod * isCrit) + (npDamageMod * isNP)} * {1 + ((superEffectiveModifier - 1) * isSuperEffective)}] + dmgPlusAdd + selfDmgCutAdd + (servantAtk * busterChainMod)

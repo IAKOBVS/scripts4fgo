@@ -1,13 +1,36 @@
-#!/usr/bin/dash
+#!/usr/bin/bash
 . $HOME/.local/bin/scripts4fgo/GLOBAL
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
+RAM_TEMP=$RAM_DIR/s4go/
 servantName=$1
 id=$(getInfo id "$servantName")
-servantBuffs=$(jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | "\(.funcTargetType) \(.funcTargetTeam) \(.buffs | .[] | .type) \(.buffs | .[] | .name) \(.funcTargetType) \(.buffs | .[] | .type) \(.buffs | .[] | .name) \(.svals | .[].Value)"' "$RAM_SERVANTS")
+getTargetType(){ jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | .funcTargetType' "$RAM_SERVANTS" >> "$RAM_TEMP"/targetType;}
+getTargetTeam(){ jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | .funcTargetTeam' "$RAM_SERVANTS" >> "$RAM_TEMP"/targetTeam;}
+getBuffType(){ jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | .buffs | .[] | .type' "$RAM_SERVANTS" >> "$RAM_TEMP"/buffType;}
+getBuffName(){ jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | .buffs | .[] | .name' "$RAM_SERVANTS" >> "$RAM_TEMP"/buffName;}
+getBuffVal(){ jq -M -r --argjson ID "$id" '.[] | select (.id==$ID).skills | .[] | .functions | .[] | .buffs | .[] | .type';}
 lineNum=$(echo "$servantBuffs" | wc -l)
 i=10
 while [ "$i" -lt "$lineNum" ]; do
-	echo "$servantBuffs" | sed -n "$i p" &
+	echo "$servantBuffs" | sed -n "$i p" >> "$RAM_TEMP"/buffVal &
 	i=$((i=i+10))
 done
+targetType=$(< "$RAM_TEMP"/targetType)
+targetTeam=$(< "$RAM_TEMP"/targetTeam)
+buffType=$(< "$RAM_TEMP"/buffType)
+buffName=$(< "$RAM_TEMP"/buffName)
 wait
+buffVal=$(< "$RAM_TEMP"/buffVal)
+while read -r line; do
+	case "$buffType" in
+		'upCommandall')
+			case "$buffName" in
+				'Arts')
+					out=aa;;
+				'Buster')
+					out=bb;;
+				'Quick')
+					out=qq;;
+			esac;;
+	esac
+done
