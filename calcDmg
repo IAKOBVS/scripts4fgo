@@ -21,8 +21,8 @@ for i in "$@"; do
 			rmNotNum "$i" >> "$OUT_DIR"/p &;;
 		se*)
 			awk -v i="$i" 'BEGIN {print substr(i,3,2)/10}' > "$RAM_DIR"/se &;;
-		str*)
-			[ -n "$( echo "$i" | grep -F '1')" ] && echo "$i.33333333333" > "$OUT_DIR"/str &;;
+		st*)
+			[ -n "$( echo "$i" | grep -F '1')" ] && echo "1.33333333333" > "$OUT_DIR"/st &;;
 	esac
 done
 sumFile(){ awk '{sum += $1} END {print sum}' "$OUT_DIR/$1";}
@@ -34,5 +34,8 @@ ifThenSum bm &
 ifThenSum qm &
 ifThenSum n &
 ifThenSum p &
+ifThenSum st &
+ifThenSum se &
+wait
 awk 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod}' "$OUT_DIR"/result
 rm -rf "$OUT_DIR"
