@@ -14,6 +14,6 @@ fi
 realesr "$1" "$out" "$baseScale" "$upscaler"
 i=0
 while [ $i -lt $it ]; do
-	realesr "$1" "$out" "$baseScale" "$upscaler"
+	realesr "$out" "$out" "$baseScale" "$upscaler"
 	i=$((i=i+1))
 done

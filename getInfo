@@ -6,9 +6,9 @@ grepName=$(echo "$@" | cut -d' ' -f2- | sed 's/-/\ /g')
 namesNum=$(echo "$grepName" | wc -w)
 case $1 in
 	'id')
-		whichCut(){ cut -d' ' -f1;};;
-	'collectionNo')
-		whichCut(){ cut -d' ' -f2;};;
+		whichCut(){ cut -d' ' -f5;};;
+	# 'collectionNo')
+	# 	whichCut(){ cut -d' ' -f2;};;
 	'className')
 		whichCut(){ cut -d' ' -f3;};;
 esac

@@ -1,8 +1,13 @@
-#!/usr/bin/dash
+#!/usr/bin/bash
 . $HOME/.local/bin/scripts4fgo/GLOBAL
-getAsc(){ jq -r -M '.[] | select(.id==100100).extraAssets.charaGraph.ascension' "$PATH_SERVANTS" | grep -o '.@.*' | sed -E 's/".?//g' > "$PATH_SERVANTS_ASC";}
-getList(){ jq -r -M '.[] | "\(.id) \(.collectionNo) \(.className) \(.traits | .[] | .name) \(.name)"' "$PATH_SERVANTS" > "$PATH_LIST_SERVANTS";}
-toRam(){ cp "$PATH_SERVANTS" "$RAM_DIR" &
+getAsc(){
+	jq -r -M '.[] | select(.id==100100).extraAssets.charaGraph.ascension' "$PATH_SERVANTS" | grep -o '.@.*' | sed -E 's/".?//g' > "$PATH_SERVANTS_ASC";}
+# getList(){ jq -r -M '.[] | "\(.id) \(.collectionNo) \(.className) \(.traits | .[] | .name) \(.name)"' "$PATH_SERVANTS" > "$PATH_LIST_SERVANTS";}
+getList(){
+	jq -r -M '.[] | "\(.noblePhantasms | .[].individuality | .[] | select(.id==4001 or .id==4002 or .id==4003) | .name) \(.noblePhantasms | .[] | .individuality | .[] | select(.id==4101 or .id==4102) | .name) \(.className) \(.atkMax) \(.id) \(.name)"' "$PATH_SERVANTS" > "$RAM_LIST_SERVANTS"
+}
+toRam(){
+	cp "$PATH_SERVANTS" "$RAM_DIR" &
 	cp "$PATH_SERVANTS_BASIC" "$RAM_DIR" &
 	cp "$PATH_LIST_SERVANTS" "$RAM_DIR" &
 	cp "$DATA_DIR/.s4go_asc" "$RAM_DIR" &

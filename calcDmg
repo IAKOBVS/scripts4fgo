@@ -37,5 +37,5 @@ ifThenSum p &
 ifThenSum st &
 ifThenSum se &
 wait
-awk 'BEGIN {prod = 1} {if ($1) prod *= $1} END {print prod}' "$OUT_DIR"/result
+awk 'BEGIN {prod = 1} {if ($1) prod *= $1} END {printf("%'"'"'d\n", prod)}' "$OUT_DIR"/result
 rm -rf "$OUT_DIR"
