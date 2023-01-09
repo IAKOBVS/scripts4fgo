@@ -4,13 +4,16 @@
 . $HOME/.local/bin/scripts4fgo/GLOBAL_CHECK
 grepName=$(echo "$@" | cut -d' ' -f2- | sed 's/-/\ /g')
 namesNum=$(echo "$grepName" | wc -w)
+whichId=5
+whichClass=3
+whichCollectionNo=6
 case $1 in
 	'id')
-		whichCut(){ cut -d' ' -f5;};;
-	# 'collectionNo')
-	# 	whichCut(){ cut -d' ' -f2;};;
+		whichCut(){ cut -d' ' -f"$whichId";};;
+	'collectionNo')
+		whichCut(){ cut -d' ' -f"$whichCollectionNo";};;
 	'className')
-		whichCut(){ cut -d' ' -f3;};;
+		whichCut(){ cut -d' ' -f"$whichClass";};;
 esac
 case $namesNum in
 	'1')
