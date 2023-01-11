@@ -26,8 +26,7 @@ case $1 in
 		outDir=$PWD/;;
 esac
 for servantName in $servants; do
-	{
-	id=$(getInfo id "$servantName"); images=$( jq --argjson ID "$id" -r -M '.[] | select(.id==$ID).extraAssets' "$RAM_SERVANTS" | grep -o 'https.*' | sed -E 's/".?//g')
+	{ id=$(getInfo id "$servantName"); images=$( jq --argjson ID "$id" -r -M '.[] | select(.id==$ID).extraAssets' "$RAM_SERVANTS" | grep -o 'https.*' | sed -E 's/".?//g' | grep -f "$RAM_SERVANTS_ASC")
 	{ [ "$1" == '-v' ] && echo "$images" | grep -o '[^/]*$' | sed "s|^|$outDir|g";} &
 	[ ! -d "$outDir" ] && mkdir "$outDir"
 	for image in $images; do
